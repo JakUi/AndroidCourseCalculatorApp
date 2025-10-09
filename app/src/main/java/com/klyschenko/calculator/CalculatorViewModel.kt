@@ -4,14 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlin.random.Random
 
-class CalculatorViewModel: ViewModel() {
+class CalculatorViewModel: ViewModel() { // это ViewModel
 
-    private val _state = MutableStateFlow(
-        Display(
-            expression = "45x8",
-            result = "360"
-        )
+    private val _state: MutableStateFlow<CalculatorState> = MutableStateFlow(
+        CalculatorState.Initial
     )
 
     val state = _state.asStateFlow()
@@ -20,15 +18,41 @@ class CalculatorViewModel: ViewModel() {
         Log.d("CalculatorViewModel", "Command: $command")
         when (command) {
             CalculatorCommand.Clear -> {
-                _state.value = Display("", "")
+                _state.value = CalculatorState.Initial
             }
 
-            CalculatorCommand.Evaluate -> {}
+            CalculatorCommand.Evaluate -> {
+                val isError = Random.nextBoolean()
+                _state.value = if (isError) {
+                    CalculatorState.Error("100/0")
+                } else {
+                    CalculatorState.Success("100")
+                }
+            }
 
-            is CalculatorCommand.Input -> {}
+            is CalculatorCommand.Input -> {
+                _state.value = CalculatorState.Input(
+                    expression = command.symbol.name,
+                    result = "100"
+                )
+            }
         }
     }
 
+}
+
+sealed interface CalculatorState {
+
+    data object Initial: CalculatorState
+
+    data class Input(
+        val expression: String,
+        val result: String
+    ): CalculatorState
+
+    data class Success(val result: String): CalculatorState
+
+    data class Error(val expression: String): CalculatorState
 }
 
 sealed interface CalculatorCommand {

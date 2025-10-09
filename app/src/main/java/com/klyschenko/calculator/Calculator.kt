@@ -27,7 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
-fun Calculator(
+fun Calculator( // Это View
     modifier: Modifier = Modifier,
     viewModel: CalculatorViewModel = viewModel() // так создаём экземпляр viewModel. Тип переменной здесь обязательно указывать!
 ) {
@@ -40,7 +40,8 @@ fun Calculator(
     ) {
         Column(
             // окно ввода и вывода результатов
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(
                         topStart = 0.dp,
@@ -55,18 +56,53 @@ fun Calculator(
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End
         ) {
-            Text(
-                text = state.value.expression,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = state.value.result,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+
+            when(val currentState = state.value) { // вынесли это в отдельную переменную т.к. state может
+                // измениться со временем (это же flow) и компилятор не разрешает так делать.
+                is CalculatorState.Error -> {
+                    Text(
+                        text = currentState.expression,
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.error // это цвет ошибки в matherialTheme
+                    )
+                    Text(
+                        text = "", // это оставляем чтобы вёрстка не поеахала (чтобы результат не был в самом низу)
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                CalculatorState.Initial -> {}
+                is CalculatorState.Input -> {
+                    Text(
+                        text = currentState.expression,
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = currentState.result,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                is CalculatorState.Success -> {
+                    Text(
+                        text = currentState.result,
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = "", // это оставляем чтобы вёрстка не поеахала (чтобы результат не был в самом низу)
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
         }
 
         Row(
@@ -74,10 +110,11 @@ fun Calculator(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .clickable {
-                    viewModel.processCommand(CalculatorCommand.Input(Symbol.SQRT))
-                },
+                        viewModel.processCommand(CalculatorCommand.Input(Symbol.SQRT))
+                    },
                 text = "√",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -85,7 +122,8 @@ fun Calculator(
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .clickable {
                         viewModel.processCommand(CalculatorCommand.Input(Symbol.PI))
                     },
@@ -96,7 +134,8 @@ fun Calculator(
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .clickable {
                         viewModel.processCommand(CalculatorCommand.Input(Symbol.POWER))
                     },
@@ -107,10 +146,11 @@ fun Calculator(
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .clickable {
-                    viewModel.processCommand(CalculatorCommand.Input(Symbol.FACTORIAL))
-                },
+                        viewModel.processCommand(CalculatorCommand.Input(Symbol.FACTORIAL))
+                    },
                 text = "!",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -432,7 +472,8 @@ fun Calculator(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Box(
-                modifier = Modifier.weight(2f)
+                modifier = Modifier
+                    .weight(2f)
                     .clip(CircleShape)
                     .clickable {
                         viewModel.processCommand(CalculatorCommand.Input(Symbol.DIGIT_0))
@@ -449,7 +490,8 @@ fun Calculator(
             }
 
             Box(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .clip(CircleShape)
                     .clickable {
                         viewModel.processCommand(CalculatorCommand.Input(Symbol.DOT))
