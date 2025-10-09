@@ -1,21 +1,26 @@
 package com.klyschenko.calculator
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class CalculatorViewModel {
 
-    val state = mutableStateOf(
+    private val _state = MutableStateFlow(
         Display(
             expression = "45x8",
             result = "360"
         )
     )
 
+    val state = _state.asStateFlow()
+
     fun processCommand(command: CalculatorCommand) {
         Log.d("CalculatorViewModel", "Command: $command")
         when (command) {
-            CalculatorCommand.Clear -> {}
+            CalculatorCommand.Clear -> {
+                _state.value = Display("", "")
+            }
 
             CalculatorCommand.Evaluate -> {}
 
