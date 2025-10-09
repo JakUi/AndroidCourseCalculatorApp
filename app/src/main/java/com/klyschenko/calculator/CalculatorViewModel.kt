@@ -1,10 +1,11 @@
 package com.klyschenko.calculator
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class CalculatorViewModel {
+class CalculatorViewModel: ViewModel() {
 
     private val _state = MutableStateFlow(
         Display(

@@ -23,13 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
 fun Calculator(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CalculatorViewModel = viewModel() // так создаём экземпляр viewModel. Тип переменной здесь обязательно указывать!
 ) {
-    val viewModel = CalculatorViewModel()
+
     val state = viewModel.state.collectAsState()
 
     Column(
