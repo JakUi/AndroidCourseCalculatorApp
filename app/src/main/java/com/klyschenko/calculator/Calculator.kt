@@ -62,12 +62,14 @@ fun Calculator( // Это View
                 is CalculatorState.Error -> {
                     Text(
                         text = currentState.expression,
+                        lineHeight = 36.sp,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.error // это цвет ошибки в matherialTheme
                     )
                     Text(
                         text = "", // это оставляем чтобы вёрстка не поеахала (чтобы результат не был в самом низу)
+                        lineHeight = 17.sp,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -77,12 +79,14 @@ fun Calculator( // Это View
                 is CalculatorState.Input -> {
                     Text(
                         text = currentState.expression,
+                        lineHeight = 36.sp,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
                         text = currentState.result,
+                        lineHeight = 17.sp,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -91,12 +95,14 @@ fun Calculator( // Это View
                 is CalculatorState.Success -> {
                     Text(
                         text = currentState.result,
+                        lineHeight = 36.sp,
                         fontSize = 36.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     Text(
                         text = "", // это оставляем чтобы вёрстка не поеахала (чтобы результат не был в самом низу)
+                        lineHeight = 17.sp,
                         fontSize = 17.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
